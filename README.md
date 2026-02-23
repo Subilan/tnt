@@ -103,6 +103,8 @@ python translate.py lecture_en.srt -fromlang en -tolang zh -o lecture_zh.srt
 
 ### 依赖安装
 
+- 建议使用 Python 3.9
+
 首先使用 conda 或 uv 或 venv 创建虚拟环境。然后从 requirements.txt 安装依赖。
 
 ```bash
