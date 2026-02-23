@@ -1,0 +1,6 @@
+.venv/
+*.m4a
+*.wav
+*.srt
+cache/
+.idea/
