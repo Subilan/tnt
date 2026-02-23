@@ -64,7 +64,8 @@ python transcribe.py input_16k.wav -lang en -m medium -o output.srt
 
 ### 3. 字幕翻译
 
-> ![IMPORTANT]
+> [!WARNING]
+> 
 > 目前仅测试了英文→中文的翻译流程，其余语言的效果可能有所偏差或不可用。
 > 这主要与脚本中当前采用的语言隐含信息有关，例如标点符号和用于识别单词的正则表达式。
 
@@ -164,12 +165,7 @@ tnt/
 └── README.md
 ```
 
-## 可能有用的信息
-
-- HanLP
-- 可以通过设置环境变量来提高 ollama 的并行数，进而充分利用硬件。
-
-## 贡献指南
+## 贡献
 
 1. Fork 本仓库
 2. 创建功能分支（`git checkout -b feature/your-feature`）
