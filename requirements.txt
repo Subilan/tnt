@@ -9,7 +9,7 @@ Cython==3.2.4
 dtw-python==1.7.4
 exceptiongroup==1.3.1
 ffmpeg-python==0.2.0
-filelock==3.19.1
+filelock==3.20.3
 flatbuffers==25.12.19
 fsspec==2025.10.0
 future==1.0.0
