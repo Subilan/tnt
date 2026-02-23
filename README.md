@@ -1,7 +1,8 @@
-<center><img src="./minecraft_tnt.png" alt="A TNT from Minecraft"/></center>
-<center><h1>tnt</h1></center>
-<center><small><em>Transcribe and Translate</em></small></center>
-<center>本地优先的 SRT 字幕生成与翻译脚本工具</center>
+<div align="center"><img height="100px" src="./minecraft_tnt.png" alt="A TNT from Minecraft"/>
+<h1>tnt</h1>
+<h6><em>Transcribe and Translate</em></h6>
+<p>本地优先的 SRT 字幕生成与翻译脚本工具</p>
+</div>
 
 本项目主要提供一套完整的本地化字幕处理流程，包括：从音频文件转录生成字幕，将字幕翻译为目标语言，将目标语言回填到原字幕的相应位置。
 
@@ -9,16 +10,16 @@
 
 本项目主要基于下列开源技术
 
-- **Whisper** 和 **whisper-timestamped**，用于完成语音的转录。Whisper 是 OpenAI 开源的语音识别模型，可以完成音频到 TXT、JSON、SRT 等的转换。whisper_timestamped 支持提取出精细到单词级别的转录时间戳。
-- **Silero VAD** 是一个轻量级的语音活动检测模型，用于精确识别人声片段，在本项目中用于初步断句检测
-- **TranslateGemma** 是 Google 在 2026 年 1 月推出的翻译模型，本项目主要通过 Ollama 本地部署方式调用，以实现在端侧设备上基于 LLM 的机器翻译
-- **HanLP** 是一套 NLP 工具包，主要用于对译得文本进行分词和词性标注
+- [**Whisper**](https://github.com/openai/whisper) 和 [**whisper-imestamped**](https://github.com/linto-ai/whisper-timestamped)，用于完成语音的转录。whisper 是 OpenAI 开源的语音识别模型，可以完成音频到 TXT、JSON、SRT 等的转换。whisper-timestamped 支持提取出精细到单词级别的转录时间戳。
+- [**Silero VAD**](https://github.com/snakers4/silero-vad) 是一个轻量级高准确率的语音活动检测模型，用于精确识别人声片段，在本项目中用于初步断句检测
+- [**TranslateGemma**](https://huggingface.co/collections/google/translategemma) 是 Google 在 2026 年 1 月推出的翻译模型，本项目主要通过 Ollama 本地部署方式调用，以实现在端侧设备上基于 LLM 的机器翻译
+- [**HanLP**](https://github.com/hankcs/HanLP) 是一套 NLP 工具包，主要用于对译得文本进行分词和词性标注
 - **ffmpeg** 用于音频的转换和处理
-- **pysrt** 用于对 SRT 字幕文件的读写和操作
+- [**pysrt**](https://github.com/byroot/pysrt) 用于对 SRT 字幕文件的读写和操作
 
 ## 特点
 
-- 本地优先。所有核心模型（Whisper、Silero VAD、TranslateGemma）均可以在边缘设备正常运行，无需联网或调用外部 API。音频数据和处理结果完全保留在本地，适合处理敏感内容、在离线环境中使用或者单纯节省成本。
+- 本地优先。所有核心模型（whisper、Silero VAD、TranslateGemma）均可以在边缘设备正常运行，无需联网或调用外部 API。音频数据和处理结果完全保留在本地，适合处理敏感内容、在离线环境中使用或者单纯节省成本。
 - 使用语音活动检测。使用 Silero VAD 检测音频中的人声片段，仅在有语音的区间生成字幕，避免在静音、背景音区域产生无效字幕，同时提高时间轴的对应程度和自然感。
 - 带回退的智能回填。这主要用于实现双语字幕。由于语言之间存在语序区别，语义对齐的结果看起来不能使人满意。目前主要采用借助词性标注信息确定句子的合理断点后，大致按照字幕片段的持续时间比例进行回填的简单流程。
 - 字幕整理。包括对字幕中不需要的标点符号的清理、字幕句尾不合理的多余词语的移动、时间轴的紧凑（避免闪烁）等。
@@ -55,8 +56,8 @@ python transcribe.py input_16k.wav -lang en -m medium -o output.srt
 
 参数说明：
 
-- `-lang` / `--language`：音频语言代码（如 `en`、`zh`、`ja`），如果不填默认为 `autodetect` 自动检测。自动检测会使用 Whisper 截取音频的前 30 秒进行语言检测。
-- `-m` / `--model`：Whisper 模型，可选 `tiny`、`base`、`small`、`medium`、`large`、`turbo`，默认且推荐使用 `turbo`。有关各个模型的参数及显存占用，请参考 whisper repo 的 [Available models and languages](https://github.com/openai/whisper#available-models-and-languages) 一节
+- `-lang` / `--language`：音频语言代码（如 `en`、`zh`、`ja`），如果不填默认为 `autodetect` 自动检测。自动检测会使用 whisper 截取音频的前 30 秒进行语言检测。
+- `-m` / `--model`：whisper 模型，可选 `tiny`、`base`、`small`、`medium`、`large`、`turbo`，默认且推荐使用 `turbo`。有关各个模型的参数及显存占用，请参考 whisper repo 的 [Available models and languages](https://github.com/openai/whisper#available-models-and-languages) 一节
 - `-o` / `--output`：输出 SRT 文件路径，默认在当前目录且与输入文件同名
 - `-oj` / `--with-json-output`：同时输出 JSON 格式的转录结果
 - `-otxt` / `--with-txt-output`：同时输出纯文本（TXT）格式的转录结果
