@@ -11,6 +11,7 @@ from joblib import Memory
 from pydantic import BaseModel
 from pysrt import SubRipItem
 
+from utils.cacheutil import default_cache_callback
 from utils.logutil import get_logger
 
 log = get_logger('transcribe')
@@ -18,12 +19,12 @@ log = get_logger('transcribe')
 memory = Memory(location='./cache', verbose=0)
 
 
-@memory.cache(ignore=['whisper_model', 'audio'])
+@memory.cache(ignore=['whisper_model', 'audio'], cache_validation_callback=default_cache_callback)
 def transcribe(whisper_model, audio, audio_language, _cache_ref_audio_path=None):
     return whisper_timestamped.transcribe(whisper_model, audio, language=audio_language)
 
 
-@memory.cache
+@memory.cache(cache_validation_callback=default_cache_callback)
 def get_speech_timestamps(audio, model):
     return silero_vad.get_speech_timestamps(
         audio,

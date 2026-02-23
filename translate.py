@@ -1,6 +1,7 @@
 import argparse
 import bisect
 import concurrent
+import os
 from concurrent.futures import ThreadPoolExecutor
 
 import hanlp
@@ -11,6 +12,7 @@ from pydantic import BaseModel
 from pysrt import SubRipItem
 
 from translate_gemma_language_codes import get_language_name_from_code, LANGUAGE_MAP
+from utils.cacheutil import default_cache_callback
 from utils.logutil import get_logger
 
 log = get_logger('translate')
@@ -36,7 +38,7 @@ Produce only the {TARGET_LANG} translation, without any additional explanations 
     )
 
 
-@memory.cache(ignore=['ollama_client'])
+@memory.cache(ignore=['ollama_client'], cache_validation_callback=default_cache_callback)
 def translate(ollama_client: Client, text: str, translate_gemma_size: str, source_lang_code: str,
               target_lang_code: str):
     resp = ollama_client.chat(model=f'translategemma:{translate_gemma_size}', messages=[
